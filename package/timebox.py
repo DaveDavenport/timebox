@@ -7,7 +7,7 @@ from messages import TimeBoxMessages
 class TimeBox:
     """Class TimeBox encapsulates the TimeBox communication."""
     
-    DEFAULTHOST = "11:75:58:48:2F:DA"
+    DEFAULTHOST = "11:75:58:0E:F1:8A"
 
     COMMANDS = {
         "switch radio": 0x05,
@@ -60,7 +60,7 @@ class TimeBox:
         """Send raw payload to the TimeBox. (Will be escaped, checksumed and
         messaged between 0x01 and 0x02."""
         msg = self.messages.make_message(payload)
-        return self.socket.send(bytes(msg))
+        return self.socket.send(str(bytearray(msg)))
 
     def send_command(self, command, args=None):
         """Send command with optional arguments"""
@@ -116,7 +116,7 @@ class TimeBox:
     def set_static_image(self, image):
         """Set the image on the TimeBox"""
         msg = self.messages.static_image_message(image)
-        self.socket.send(bytes(msg))
+        self.socket.send(str(bytearray((msg))))
 
     def set_dynamic_images(self, images, frame_delay):
         """Set the image on the TimeBox"""
@@ -124,7 +124,7 @@ class TimeBox:
         for img in images:
             msg = self.messages.dynamic_image_message(img, fnum, frame_delay)
             fnum = fnum + 1
-            self.socket.send(bytes(msg))
+            self.socket.send(str(bytearray((msg))))
 
     def show_temperature(self, color=None):
         """Show temperature on the TimeBox in Celsius"""
